@@ -26,7 +26,7 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
   # instead of the hostname.
   config :sender, :validate => :string, :default => "%{host}"
 
-  # The GELF message level. Dynamic values like %{level} are permitted here;
+  # The GELF message level. Dynamic values like `%{level}` are permitted here;
   # useful if you want to parse the 'log level' from an event and use that
   # as the GELF level/severity.
   #
@@ -39,19 +39,19 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
   # "informational".
   config :level, :validate => :array, :default => [ "%{severity}", "INFO" ]
 
-  # The GELF facility. Dynamic values like %{foo} are permitted here; this
+  # The GELF facility. Dynamic values like `%{foo}` are permitted here; this
   # is useful if you need to use a value from the event as the facility name.
   # Should now be sent as an underscored "additional field" (e.g. `\_facility`)
   config :facility, :validate => :string, :deprecated => true
 
   # The GELF line number; this is usually the line number in your program where
-  # the log event originated. Dynamic values like %{foo} are permitted here, but the
+  # the log event originated. Dynamic values like `%{foo}` are permitted here, but the
   # value should be a number.
   # Should now be sent as an underscored "additional field" (e.g. `\_line`).
   config :line, :validate => :string, :deprecated => true
 
   # The GELF file; this is usually the source code file in your program where
-  # the log event originated. Dynamic values like %{foo} are permitted here.
+  # the log event originated. Dynamic values like `%{foo}` are permitted here.
   # Should now be sent as an underscored "additional field" (e.g. `\_file`).
   config :file, :validate => :string, :deprecated => true
 
@@ -70,11 +70,11 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
 
   # The GELF custom field mappings. GELF supports arbitrary attributes as custom
   # fields. This exposes that. Exclude the `_` portion of the field name
-  # e.g. `custom_fields => ['foo_field', 'some_value']
+  # e.g. `custom_fields => ['foo_field', 'some_value']`
   # sets `_foo_field` = `some_value`.
   config :custom_fields, :validate => :hash, :default => {}
 
-  # The GELF full message. Dynamic values like %{foo} are permitted here.
+  # The GELF full message. Dynamic values like `%{foo}` are permitted here.
   config :full_message, :validate => :string, :default => "%{message}"
 
   # The GELF short message field name. If the field does not exist or is empty,
