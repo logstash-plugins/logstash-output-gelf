@@ -5,7 +5,7 @@ require "logstash/outputs/base"
 # This output generates messages in GELF format. This is most useful if you
 # want to use Logstash to output events to Graylog2.
 #
-# More information at <http://graylog2.org/gelf#specs>
+# More information at http://graylog2.org/gelf#specs[The Graylog2 GELF specs page]
 class LogStash::Outputs::Gelf < LogStash::Outputs::Base
 
   config_name "gelf"
