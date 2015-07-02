@@ -178,7 +178,7 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
       if event["tags"].is_a?(Array)
         m["_tags"] = event["tags"].join(', ')
       else
-        m["_tags"] = event["tags"]
+        m["_tags"] = event["tags"] if event["tags"]
       end
     end
 
