@@ -175,7 +175,11 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
     end
 
     if @ship_tags
-      m["_tags"] = event["tags"].join(', ') if event["tags"]
+      if event["tags"].is_a?(Array)
+        m["_tags"] = event["tags"].join(', ')
+      else
+        m["_tags"] = event["tags"]
+      end
     end
 
     if @custom_fields
@@ -191,7 +195,7 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
         parsed_value = event.sprintf(value)
         next if value.count('%{') > 0 and parsed_value == value
 
-        level = parsed_value
+        level = parsed_value.to_s
         break
       end
     else
