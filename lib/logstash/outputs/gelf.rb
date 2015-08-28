@@ -81,12 +81,22 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
   config :short_message, :validate => :string, :default => "short_message"
 
   public
+
+  def inject_client(gelf)
+    @gelf = gelf
+    self
+  end
+
+  def gelf
+    @gelf
+  end
+
   def register
     require "gelf" # rubygem 'gelf'
     option_hash = Hash.new
 
     #@gelf = GELF::Notifier.new(@host, @port, @chunksize, option_hash)
-    @gelf = GELF::Notifier.new(@host, @port, @chunksize)
+    @gelf ||= GELF::Notifier.new(@host, @port, @chunksize)
 
     # This sets the 'log level' of gelf; since we're forwarding messages, we'll
     # want to forward *all* messages, so set level to 0 so all messages get
