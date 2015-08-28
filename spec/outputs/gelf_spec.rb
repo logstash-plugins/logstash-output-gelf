@@ -18,7 +18,6 @@ describe LogStash::Outputs::Gelf do
 
     let(:properties) { { "message" => "This is a message!"} }
     let(:event)      { LogStash::Event.new(properties) }
-
     let(:gelf)       { GELF::Notifier.new(host, port, subject.chunksize) }
 
     before(:each) do
