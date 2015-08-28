@@ -5,7 +5,7 @@ require "gelf"
 describe LogStash::Outputs::Gelf do
 
   let(:host) { "localhost" }
-  let(:port) { rand(2048)+1024 }
+  let(:port) { rand(1024..65535) }
 
   it "should register without errors" do
     plugin = LogStash::Plugin.lookup("output", "gelf").new("host" => host, "port" => port)
