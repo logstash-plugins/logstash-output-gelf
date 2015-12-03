@@ -207,7 +207,7 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
     else
       level = event.sprintf(@level.to_s)
     end
-    m["level"] = (@level_map[level.downcase] || level).to_i
+    m["level"] = (@level_map[level.to_s.downcase] || level).to_i
 
     @logger.debug(["Sending GELF event", m])
     begin
