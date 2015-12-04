@@ -134,7 +134,6 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
 
   public
   def receive(event)
-    
 
     # We have to make our own hash here because GELF expects a hash
     # with a specific format.
@@ -207,7 +206,7 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
     else
       level = event.sprintf(@level.to_s)
     end
-    m["level"] = (@level_map[level.downcase] || level).to_i
+    m["level"] = (@level_map[level.to_s.downcase] || level).to_i
 
     @logger.debug(["Sending GELF event", m])
     begin
