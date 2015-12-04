@@ -134,7 +134,6 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
 
   public
   def receive(event)
-    
 
     # We have to make our own hash here because GELF expects a hash
     # with a specific format.

@@ -16,7 +16,10 @@ describe LogStash::Outputs::Gelf do
 
     subject { LogStash::Outputs::Gelf.new("host" => host, "port" => port ) }
 
-    let(:properties) { { "message" => "This is a message!"} }
+    let(:properties) { {
+      "message" => "This is a message!",
+      "severity" => 7,
+    } }
     let(:event)      { LogStash::Event.new(properties) }
     let(:gelf)       { GELF::Notifier.new(host, port, subject.chunksize) }
 
@@ -28,6 +31,12 @@ describe LogStash::Outputs::Gelf do
     it "sends the generated event to gelf" do
       expect(subject.gelf).to receive(:notify!).with(hash_including("short_message"=>"This is a message!",
                                                                     "full_message"=>"This is a message!"),
+                                                     hash_including(:timestamp))
+      subject.receive(event)
+    end
+
+    it "accepts a Fixnum in the severity field" do
+      expect(subject.gelf).to receive(:notify!).with(hash_including("level"=>7),
                                                      hash_including(:timestamp))
       subject.receive(event)
     end
