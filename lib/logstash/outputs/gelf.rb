@@ -140,9 +140,9 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
     # with a specific format.
     m = Hash.new
 
-    m["short_message"] = event["message"]
-    if event[@short_message]
-      v = event[@short_message]
+    m["short_message"] = event.get("message")
+    if event.get(@short_message)
+      v = event.get(@short_message)
       short_message = (v.is_a?(Array) && v.length == 1) ? v.first : v
       short_message = short_message.to_s
       if !short_message.empty?
@@ -185,7 +185,7 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
     end
 
     if @ship_tags
-      m["_tags"] = event["tags"].join(', ') if event["tags"]
+      m["_tags"] = event.get("tags").join(', ') if event.get("tags")
     end
 
     if @custom_fields

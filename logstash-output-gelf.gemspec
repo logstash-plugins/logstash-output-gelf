@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.metadata = { "logstash_plugin" => "true", "logstash_group" => "output" }
 
   # Gem dependencies
-  s.add_runtime_dependency "logstash-core-plugin-api", "~> 1.0"
+  s.add_runtime_dependency "logstash-core-plugin-api", "~> 2.0"
 
   s.add_runtime_dependency 'gelf', ['1.3.2']
   s.add_runtime_dependency 'logstash-codec-plain'
