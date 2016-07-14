@@ -1,3 +1,6 @@
+## 3.1.1
+  - Relax constraint on logstash-core-plugin-api to >= 1.60 <= 2.99
+
 ## 3.1.0
  - breaking,config: Remove deprecated config `facility` and `file`, please add the necessary into `custom_fields` configuration so they are send as `_`-fields
  - breaking,config: Remove deprecated config `line`, please add it into `custom_fields` configuration so it is send as `_`-field. Please also ensure to convert it to integer upfront.
