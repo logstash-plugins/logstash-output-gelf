@@ -19,6 +19,9 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
   # The GELF chunksize. You usually don't need to change this.
   config :chunksize, :validate => :number, :default => 1420
 
+  # The transport protocol, either TCP or UDP.
+  config :protocol, :validate => ["TCP", "UDP"], :default => "UDP"
+
   # Allow overriding of the GELF `sender` field. This is useful if you
   # want to use something other than the event's source host as the
   # "sender" of an event. A common case for this is using the application name
@@ -80,7 +83,7 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
     option_hash = Hash.new
 
     #@gelf = GELF::Notifier.new(@host, @port, @chunksize, option_hash)
-    @gelf ||= GELF::Notifier.new(@host, @port, @chunksize)
+    @gelf ||= GELF::Notifier.new(@host, @port, @chunksize, { :protocol => GELF::Protocol.const_get(@protocol) })
 
     # This sets the 'log level' of gelf; since we're forwarding messages, we'll
     # want to forward *all* messages, so set level to 0 so all messages get
