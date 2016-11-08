@@ -1,3 +1,6 @@
+## 3.1.2
+  - Remove call of logger with an array object which caused logstash to terminate
+
 ## 3.1.1
   - Relax constraint on logstash-core-plugin-api to >= 1.60 <= 2.99
 

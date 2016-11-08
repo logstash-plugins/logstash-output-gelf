@@ -187,7 +187,7 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
     end
     m["level"] = (level.respond_to?(:downcase) && @level_map[level.downcase] || level).to_i
 
-    @logger.debug(["Sending GELF event", m])
+    @logger.debug("Sending GELF event", :event => m)
     begin
       @gelf.notify!(m, :timestamp => event.timestamp.to_f)
     rescue
