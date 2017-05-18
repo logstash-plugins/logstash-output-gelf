@@ -61,7 +61,7 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
   config :custom_fields, :validate => :hash, :default => {}
 
   # The GELF full message. Dynamic values like `%{foo}` are permitted here.
-  config :full_message, :validate => :string, :default => "%{message}"
+  config :full_message, :validate => :string, :default => "message"
 
   # The GELF short message field name. If the field does not exist or is empty,
   # the event message is taken instead.
