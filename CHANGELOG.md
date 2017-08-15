@@ -1,3 +1,6 @@
+## 3.1.4
+  - Fix some documentation issues
+
 ## 3.1.2
   - Remove call of logger with an array object which caused logstash to terminate
 
