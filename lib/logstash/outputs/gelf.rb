@@ -89,6 +89,8 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
     if !@tls.empty?
       option_hash['tls'] = @tls
       option_hash['tls']['version'] = tls_version
+      # Makes SSL Errors float up and be logged
+      option_hash['tls']['rescue_ssl_errors'] = false
     end 
 
     @gelf ||= GELF::Notifier.new(@host, @port, @chunksize, option_hash)
