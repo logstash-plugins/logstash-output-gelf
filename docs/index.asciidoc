@@ -188,6 +188,7 @@ be used
 | no_verify |<<boolean,boolean>>|`false`| Disables validation of Root CA
 | all_ciphers |<<boolean,boolean>>|`false`| Allows TLS to use any system available cipher. !Insecure!
 | rescue_ssl_errors |<<boolean,boolean>> | `false` | SSL Errors will not be handled and will bubble up into the logstash logs. Setting `true` will eat the errors and continue execution.
+| version |<<string,string>>|`"TLSv1_2"`| TLS version, other options are `"TLSv1_1"` and `"TLSv1"`
 | cert |<<string,string>>|None|The client certificate file
 | key |<<string,string>>|None|The key for the client certificate
 |=======================================================================
