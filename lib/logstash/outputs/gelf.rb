@@ -143,7 +143,7 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
 
     if @ship_metadata
       event.to_hash.each do |name, value|
-        next if value == nil
+        next if value.nil?
         next if name == "message"
 
         # Trim leading '_' in the event
