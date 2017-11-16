@@ -67,6 +67,10 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
   # the event message is taken instead.
   config :short_message, :validate => :string, :default => "short_message"
 
+  # The GELF tls field mappings. 
+  # See https://github.com/graylog-labs/gelf-rb/blob/master/lib/gelf/transport/tcp_tls.rb
+  config :tls, :validate => :hash, :default => {}
+
   public
 
   def inject_client(gelf)
@@ -81,9 +85,16 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
   def register
     require "gelf" # rubygem 'gelf'
     option_hash = Hash.new
+    option_hash['protocol'] = GELF::Protocol.const_get(@protocol)
+    if !@tls.empty?
+      option_hash['tls'] = @tls
+      option_hash['tls']['version'] = tls_version
+      # Makes SSL Errors float up and be logged
+      option_hash['tls']['rescue_ssl_errors'] = false
+    end 
 
-    #@gelf = GELF::Notifier.new(@host, @port, @chunksize, option_hash)
-    @gelf ||= GELF::Notifier.new(@host, @port, @chunksize, { :protocol => GELF::Protocol.const_get(@protocol) })
+    @gelf ||= GELF::Notifier.new(@host, @port, @chunksize, option_hash)
+    #@gelf ||= GELF::Notifier.new(@host, @port, @chunksize, { :protocol => GELF::Protocol.const_get(@protocol) })
 
     # This sets the 'log level' of gelf; since we're forwarding messages, we'll
     # want to forward *all* messages, so set level to 0 so all messages get
@@ -119,10 +130,23 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
      }
   end # def register
 
+  def tls_version
+    if @tls.key?('version')
+      METHODS_MAP[@tls['version']] or :TLSv1_2
+    else
+      :TLSv1_2
+    end
+  end
+  METHODS_MAP = {
+    "TLSv1" => :TLSv1,
+    "TLSv1_1" => :TLSv1_1,
+    "TLSv1_2" => :TLSv1_2,
+  }.freeze
+  private_constant :METHODS_MAP
+
   public
   def receive(event)
     
-
     # We have to make our own hash here because GELF expects a hash
     # with a specific format.
     m = Hash.new
@@ -189,7 +213,6 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
       level = event.sprintf(@level.to_s)
     end
     m["level"] = (level.respond_to?(:downcase) && @level_map[level.downcase] || level).to_i
-
     @logger.debug("Sending GELF event", :event => m)
     begin
       @gelf.notify!(m, :timestamp => event.timestamp.to_f)
