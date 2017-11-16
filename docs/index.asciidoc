@@ -57,12 +57,7 @@ output plugins.
   * Value type is <<number,number>>
   * Default value is `1420`
 
-The 
-
-
-
-
-chunksize. You usually don't need to change this.
+The chunksize. You usually don't need to change this.
 
 [id="plugins-{type}s-{plugin}-custom_fields"]
 ===== `custom_fields` 
