@@ -1,8 +1,14 @@
+## 3.1.6
+  - Add docs for TCP protocol option, which has existed since 3.1.3
+
 ## 3.1.5
   - Update gemspec summary
 
 ## 3.1.4
   - Fix some documentation issues
+
+## 3.1.3
+  - Add support for output via TCP protocol
 
 ## 3.1.2
   - Remove call of logger with an array object which caused logstash to terminate
