@@ -1,3 +1,6 @@
+## 3.1.7
+  - Docs: Set the default_codec doc attribute.
+
 ## 3.1.6
   - Add docs for TCP protocol option, which has existed since 3.1.3
 
