@@ -1,3 +1,6 @@
+## 3.1.8
+  - Changed reference in documentatation to refer to `stable` version of GELF Payload specification [#33](https://github.com/logstash-plugins/logstash-output-gelf/pull/33)
+
 ## 3.1.7
   - Docs: Set the default_codec doc attribute.
 
