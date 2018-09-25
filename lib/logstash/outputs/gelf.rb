@@ -67,6 +67,13 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
   # the event message is taken instead.
   config :short_message, :validate => :string, :default => "short_message"
 
+  # SSL is supported since gelf-3.0.0
+  config :ssl, :validate => :boolean, :default => false
+  config :ssl_certificate_authorities, :validate => :string, :default => ""
+  config :ssl_certificate, :validate => :string, :default => ""
+  config :ssl_key, :validate => :string, :default => ""
+  config :ssl_verify_mode, validate => :string, :default => "force_peer"
+
   public
 
   def inject_client(gelf)
@@ -82,8 +89,18 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
     require "gelf" # rubygem 'gelf'
     option_hash = Hash.new
 
-    #@gelf = GELF::Notifier.new(@host, @port, @chunksize, option_hash)
-    @gelf ||= GELF::Notifier.new(@host, @port, @chunksize, { :protocol => GELF::Protocol.const_get(@protocol) })
+    option_hash['protocol'] = GELF::Protocol.const_get(@protocol)
+
+    if @ssl
+      option_hash['tls'] = true
+    end
+
+    option_hash['ssl_certificate_authorities'] = @ssl_certificate_authorities != ""
+    option_hash['ssl_certificate'] = @ssl_certificate if @ssl_certificate != ""
+    option_hash['ssl_key'] = @ssl_key if @ssl_key != ""
+    option_hash['ssl_verify_mode'] = @ssl_verify_mode if @ssl_verify_mode != ""
+
+    @gelf ||= GELF::Notifier.new(@host, @port, @chunksize, option_hash)
 
     # This sets the 'log level' of gelf; since we're forwarding messages, we'll
     # want to forward *all* messages, so set level to 0 so all messages get
