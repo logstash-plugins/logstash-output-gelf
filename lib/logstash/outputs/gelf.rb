@@ -93,12 +93,11 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
 
     if @ssl
       option_hash['tls'] = true
+      option_hash['ca'] = @ssl_certificate_authorities != ""
+      option_hash['cert'] = @ssl_certificate if @ssl_certificate != ""
+      option_hash['key'] = @ssl_key if @ssl_key != ""
+      option_hash['no_verify'] = false if @ssl_verify_mode == "force_peer" || @ssl_verify_mode == "peer"
     end
-
-    option_hash['ssl_certificate_authorities'] = @ssl_certificate_authorities != ""
-    option_hash['ssl_certificate'] = @ssl_certificate if @ssl_certificate != ""
-    option_hash['ssl_key'] = @ssl_key if @ssl_key != ""
-    option_hash['ssl_verify_mode'] = @ssl_verify_mode if @ssl_verify_mode != ""
 
     @gelf ||= GELF::Notifier.new(@host, @port, @chunksize, option_hash)
 
