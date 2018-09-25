@@ -94,6 +94,7 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
     if @ssl
       option_hash['tls'] = Hash.new
       option_hash['tls']['ca'] = @ssl_certificate_authorities != ""
+      option_hash['tls']['no_default_ca'] = true if @ssl_certificate_authorities != ""
       option_hash['tls']['cert'] = @ssl_certificate if @ssl_certificate != ""
       option_hash['tls']['key'] = @ssl_key if @ssl_key != ""
       option_hash['tls']['no_verify'] = false if @ssl_verify_mode == "force_peer" || @ssl_verify_mode == "peer"
