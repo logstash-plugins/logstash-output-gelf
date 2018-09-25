@@ -92,11 +92,13 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
     option_hash['protocol'] = GELF::Protocol.const_get(@protocol)
 
     if @ssl
-      option_hash['tls'] = true
-      option_hash['ca'] = @ssl_certificate_authorities != ""
-      option_hash['cert'] = @ssl_certificate if @ssl_certificate != ""
-      option_hash['key'] = @ssl_key if @ssl_key != ""
-      option_hash['no_verify'] = false if @ssl_verify_mode == "force_peer" || @ssl_verify_mode == "peer"
+      option_hash['tls'] = Hash.new
+      option_hash['tls']['ca'] = @ssl_certificate_authorities != ""
+      option_hash['tls']['cert'] = @ssl_certificate if @ssl_certificate != ""
+      option_hash['tls']['key'] = @ssl_key if @ssl_key != ""
+      option_hash['tls']['no_verify'] = false if @ssl_verify_mode == "force_peer" || @ssl_verify_mode == "peer"
+      # Makes SSL Errors float up and be logged
+      option_hash['tls']['rescue_ssl_errors'] = false
     end
 
     @gelf ||= GELF::Notifier.new(@host, @port, @chunksize, option_hash)
