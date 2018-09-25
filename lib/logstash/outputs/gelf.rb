@@ -72,7 +72,7 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
   config :ssl_certificate_authorities, :validate => :string, :default => ""
   config :ssl_certificate, :validate => :string, :default => ""
   config :ssl_key, :validate => :string, :default => ""
-  config :ssl_verify_mode, validate => :string, :default => "force_peer"
+  config :ssl_verify_mode, :validate => :string, :default => "force_peer"
 
   public
 
