@@ -72,7 +72,7 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
   config :ssl_certificate_authorities, :validate => :string, :default => ""
   config :ssl_certificate, :validate => :string, :default => ""
   config :ssl_key, :validate => :string, :default => ""
-  config :ssl_verify_mode, :validate => :string, :default => "force_peer"
+  config :ssl_verify_mode, :validate => ["none", "peer", "force_peer"], :default => "force_peer"
 
   public
 
@@ -91,15 +91,17 @@ class LogStash::Outputs::Gelf < LogStash::Outputs::Base
 
     option_hash['protocol'] = GELF::Protocol.const_get(@protocol)
 
-    if @ssl
+    if @ssl == true
       option_hash['tls'] = Hash.new
-      option_hash['tls']['ca'] = @ssl_certificate_authorities if @ssl_certificate_authorities != ""
-      option_hash['tls']['no_default_ca'] = true if @ssl_certificate_authorities != ""
-      option_hash['tls']['cert'] = @ssl_certificate if @ssl_certificate != ""
-      option_hash['tls']['key'] = @ssl_key if @ssl_key != ""
-      option_hash['tls']['no_verify'] = false if @ssl_verify_mode == "force_peer" || @ssl_verify_mode == "peer"
-      # Makes SSL Errors float up and be logged
-      option_hash['tls']['rescue_ssl_errors'] = false
+      option_hash['tls']['ca'] = @ssl_certificate_authorities unless @ssl_certificate_authorities.empty?
+      option_hash['tls']['no_default_ca'] = true unless @ssl_certificate_authorities.empty?
+      option_hash['tls']['cert'] = @ssl_certificate unless @ssl_certificate.empty?
+      option_hash['tls']['key'] = @ssl_key unless @ssl_key.empty?
+      option_hash['tls']['rescue_ssl_errors'] = true
+      option_hash['tls']['all_ciphers'] = true
+      if @ssl_verify_mode == "none"
+        option_hash['tls']['no_verify'] = true
+      end
     end
 
     @gelf ||= GELF::Notifier.new(@host, @port, @chunksize, option_hash)
